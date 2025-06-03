@@ -1,0 +1,71 @@
+
+Main theme idea: 
+- Game Title “idlefrog”
+- The game is in a pond or river
+- The currency gathered is flies 
+- The number of frogs is based on the number of Lilly pads 
+- Manual and automatic fly production logic? 
+- Seasonal, player needs enough flies to feed the frogs over the winter
+- “Substitute food” generation 
+- Will there be other kinds of frogs? 
+
+Gameplay loop?
+
+Frog types: 
+- worker frog: auto generate flies
+- Hunter frog: finds crickets 
+- Digger frog: finds worms 
+- Sage frog: wisdom researcher 
+- 
+
+Food types: 
+- Flies: main food/currency 
+- Crickets: 
+- Earthworms
+
+
+
+Mechanic Ideas:
+- Seasons / Hybernation? 
+
+- Currency is also Food
+
+- Alternative Food
+
+
+
+Kittens like seasonal mechanic? 
+
+Kittens inspired ideas:
+- seasonal 
+- Keep the frogs alive 
+- Currency is also food?
+- 
+
+End goal? 
+
+Currency production? 
+Main currency - flies 
+
+Multiple currencies / resources? 
+
+
+Multiple food types?
+Food Basic:
+- Flies
+- Crickets 
+- Earthworms 
+
+If multiple food types what is the diminishing currency that’s also food? 
+
+Is flies the main food and the others are food but also used in other resources crafting? 
+
+
+
+Growth type?
+- polynomial growth 
+- cost grow faster then production 
+
+Engine 
+- initGame() 
+    - check for savedata 

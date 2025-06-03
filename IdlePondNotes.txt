@@ -1,0 +1,6 @@
+
+Main Theme:
+- Game title "IdlePond"
+- Managing the resources of a pond ecosystem
+- multiple animals (frogs, bugs, plants, fish)
+

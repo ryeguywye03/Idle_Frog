@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "tippy.js": "^6.3.7"
+  },
+  "devDependencies": {
+    "daisyui": "^5.0.35"
+  }
+}

@@ -1,0 +1,59 @@
+/* app.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default, dim --prefersdark;
+}
+
+
+.resource-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resource-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 4px 0;
+}
+
+.resource-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rate {
+  font-size: 0.8rem;
+  color: green;
+}
+
+.resource-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resource-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 4px 0;
+}
+
+.resource-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.rate {
+  font-size: 0.8rem;
+  color: green;
+}

@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_DATABASE: ryan_db
+      MYSQL_USER: ryandbuser
+      MYSQL_PASSWORD: ryandbpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3307:3306"
+    networks:
+      - back-tier
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile-dev
+    container_name: svelte_app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - database
+    volumes:
+      - ./app:/app
+      - /app/node_modules  # Exclude node_modules from host
+    networks:
+      - front-tier
+      - back-tier
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_USER=ryandbuser
+      - DB_PASS=ryandbpass
+      - DB_NAME=ryan_db
+
+volumes:
+  mysqldata:
+
+networks:
+  front-tier:
+  back-tier:
