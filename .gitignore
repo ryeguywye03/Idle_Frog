@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+.svelte-kit/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+
+# System files
+.DS_Store
+.vscode/
+*.log
