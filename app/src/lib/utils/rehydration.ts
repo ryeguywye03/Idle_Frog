@@ -1,4 +1,4 @@
-import { createGameObject } from '../core/createGameObjects';
+import { createGameObject } from './createGameObjects';
 
 type GameObjectType = 'resource' | 'building' | 'frog' | 'housing' | 'frogJob';
 

@@ -1,4 +1,4 @@
-import type { FrogJobData, UnlockCondition } from '../data/types';
+import type { FrogJobData, UnlockCondition } from '$lib/types';
 
 export class FrogJob implements FrogJobData {
   id: string;
@@ -22,20 +22,4 @@ export class FrogJob implements FrogJobData {
     };
   }
 
-  meetsConditions(getters: {
-    resource: (id: string) => number;
-    building: (id: string) => number;
-    stat: (key: string) => number;
-  }): boolean {
-    if (!this.unlockConditions) return true;
-
-    return this.unlockConditions.every(cond => {
-      switch (cond.type) {
-        case 'resource': return getters.resource(cond.id) >= cond.amount;
-        case 'building': return getters.building(cond.id) >= cond.amount;
-        case 'stat': return getters.stat(cond.key) >= cond.value;
-        case 'upgrade': return false; // Extend when needed
-      }
-    });
-  }
 }

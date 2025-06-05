@@ -1,6 +1,6 @@
 import { get } from 'svelte/store';
 import { resources, buildings, upgrades, stats, frogs, frogJobs, housing } from '../state';
-import type { GameData } from '../data/types';
+import type { GameData } from '$lib/types';
 import { HousingManager } from '$lib/managers/HousingManager';
 
 export function buildSaveData(): GameData {

@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { FrogJobData } from './types';
+import type { FrogJobData } from '$lib/types';
 
 export const defaultFrogJobs: FrogJobData[] = [
   {

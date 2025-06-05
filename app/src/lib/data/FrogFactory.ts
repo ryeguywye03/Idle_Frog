@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import type { FrogData } from './types';
+import type { FrogData } from '$lib/types';
 
 export function createFrogData(): FrogData {
   return {
@@ -9,6 +9,6 @@ export function createFrogData(): FrogData {
     exp: 0,
     level: 1,
     isAuto: false,
-    autoRate: 0,
+    autoRate: 0
   };
 }

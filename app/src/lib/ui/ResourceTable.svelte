@@ -1,24 +1,25 @@
 <script lang="ts">
-    import { resources, buildings , frogs, frogJobs } from '$lib/state';
-    import { derived } from 'svelte/store';
+  import { derived } from 'svelte/store';
+  import { resources, buildings , frogs, frogJobs } from '$lib/state';
   
-    // Create a derived store so the table auto-updates
-    const resList = derived(resources, $resources => $resources);
 
-    const frogList = derived(frogs, $frogs => $frogs);
+  // Create a derived store so the table auto-updates
+  const resList = derived(resources, $resources => $resources);
 
-    const lilyPadUnlocked = derived(buildings, $buildings => {
-      const pad = $buildings.find(b => b.id === 'lily_pad');
-      return pad?.unlocked ?? false;
-    });
+  const frogList = derived(frogs, $frogs => $frogs);
 
-    const frogCount = derived(frogs, $frogs =>
-      $frogs.filter(f => f).length
-    );
+  const lilyPadUnlocked = derived(buildings, $buildings => {
+    const pad = $buildings.find(b => b.id === 'lily_pad');
+    return pad?.unlocked ?? false;
+  });
 
-    console.log(lilyPadUnlocked)
+  const frogCount = derived(frogs, $frogs =>
+    $frogs.filter(f => f).length
+  );
 
-  </script>
+  console.log(lilyPadUnlocked)
+
+</script>
   
   <table class="table">
     <thead>

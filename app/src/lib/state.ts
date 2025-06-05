@@ -6,14 +6,11 @@ import type { Resource } from './core/Resources';
 import type { Building } from './core/Buildings';
 import type { Housing } from './core/Housing';
 import type { Frog } from './core/Frogs';
+import type { FrogJob } from './core/FrogJob';
 
-import type { HousingData, FrogData } from './data/types';
-import { frogJobs } from './data/FrogJobData'; // ✅
+import type { HousingData, FrogData } from '$lib/types';
 
-export { frogJobs };
-
-import { type Stats, type UpgradeData } from './data/types';
-
+import { type StatsData, type UpgradeData } from '$lib/types';
 
 export const resources = writable<Resource[]>([]);
 
@@ -23,9 +20,11 @@ export const upgrades = writable<UpgradeData[]>([]);
 
 export const housing = writable<HousingData[]>([]);
 
-export const frogs = writable<FrogData[]>([]);
+// export const frogs = writable<Frog[]>([]);
 
-export const stats = writable<Stats>({
+export const frogJobs = writable<FrogJob[]>([]);
+
+export const stats = writable<StatsData>({
   total_clicks: 0,
   flies_collected: 0,
   flies_spent: 0,

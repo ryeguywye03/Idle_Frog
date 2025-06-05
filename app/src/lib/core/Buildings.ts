@@ -1,5 +1,5 @@
 // src/lib/core/Building.ts
-import type { BuildingData, BuildingEffect, BuildingType, UnlockCondition } from '../data/types';
+import type { BuildingData, BuildingEffect, BuildingType, UnlockCondition } from '$lib/types';
 import { Resource } from './Resources';
 import { buildings, stats } from '../state';
 import { get } from 'svelte/store';

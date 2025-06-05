@@ -1,5 +1,5 @@
 // src/lib/Resources/ResourceData.ts
-import type { ResourceData } from './types';
+import type { ResourceData } from '$lib/types';
 
 export const defaultResources: ResourceData[] = [
   {

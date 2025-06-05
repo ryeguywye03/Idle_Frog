@@ -1,5 +1,5 @@
 import { TICK_INTERVAL_MS } from '../config';
-import type { FrogData, FrogJob, HousingData } from '../data/types';
+import type { FrogData, FrogJob, HousingData } from '$lib/types';
 import { resources, buildings } from '../state';
 
 

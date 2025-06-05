@@ -1,9 +1,11 @@
-// types.ts
+// coreTypes.ts
 
 export type UnlockCondition =
   | { type: 'resource'; id: string; amount: number }
   | { type: 'building'; id: string; amount: number }
-  | { type: 'stat'; key: keyof Stats; value: number }
+  // | { type: 'frog'}
+  | { type: 'frogJob'; id: string }
+  | { type: 'stat'; key: keyof StatsData; value: number }
   | { type: 'upgrade'; id: string };
 
 export interface Unlockable {
@@ -26,7 +28,8 @@ export interface ResourceData {
   autoRate: number;
   unlocked: boolean;
   manual?: boolean;
-  justClicked?: boolean;
+  wasClicked?: boolean;
+  wasCrafted?: boolean;
   isCraftable?: boolean;
   tooltip?: {
     label: string;
@@ -61,13 +64,6 @@ export interface BuildingData {
     html?: string;
   };                   
   effects?: BuildingEffect[];
-}
-
-export interface Stats {
-    total_clicks: number;
-    flies_collected: number;
-    flies_spent: number;
-    total_frogs: number;
 }
 
 export type UpgradeData = {
@@ -106,14 +102,37 @@ export interface FrogData {
   isAuto: boolean;
   autoRate: number;
   tooltip?: { label: string; html: string };
+  houseId?: string
 }
 
-export interface GameData {
-  resources: ResourceData[];
-  upgrades: UpgradeData[];
-  buildings: BuildingData[];
-  frogjobs?: FrogJobData[];
-  frogs?: FrogData[];
-  housing: HousingData[];
-  stats: Stats;
+export interface StatsData {
+  total_clicks: number;
+  manual_clicks: number;
+  auto_collections: number;
+  manual_collections: number;
+
+  flies_collected: number;
+  flies_spent: number;
+  stems_collected?: number; // optional based on game depth
+
+  total_frogs: number;
+  frogs_spawned: number;
+  frogs_assigned_jobs: number;
+  frogs_unassigned: number;
+
+  total_crafts: number;
+  resources_spent_on_crafting: number;
+
+  buildings_constructed: number;
+  housing_units_built: number;
+
+  resources_gained: Record<string, number>;
+  resources_spent: Record<string, number>;
+
+  unlocks_achieved: number;
+  total_conditions_met: number;
+
+  time_played_seconds: number;
+  sessions_started: number;
+  last_active: string;
 }

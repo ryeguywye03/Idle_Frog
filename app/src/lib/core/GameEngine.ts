@@ -4,8 +4,6 @@ import { Building } from './Buildings';
 import { Frog } from './Frogs';
 import { resources, buildings, frogs, upgrades, stats } from '$lib/state';
 import { get } from 'svelte/store';
-import { checkUnlockConditions } from '../utils/unlocks';
-import type { Unlockable, Stats } from '../data/types';
 import { UnlockManager } from '$lib/managers/UnlockManager';
 import { FrogManager } from '$lib/managers/FrogManager';
 import { HousingManager } from '$lib/managers/HousingManager';
@@ -43,6 +41,26 @@ export class GameEngine {
   private initialize() {
     console.log('Initializing engine');
     this.checkAllUnlocks();
+    this.refresh();
+  }
+
+  tick() {
+    // console.log('Tick');
+    // Existing generators
+    this.checkAutoGenerators();
+
+    // Try to spawn frogs into vacant homes
+    
+    console.log(this.housingManager.hasVacancy());
+
+
+    if(this.housingManager.hasVacancy() === true){
+      this.frogManager.spawnFrogs(this.housingManager);
+    }
+
+    // this.frogManager.spawnFrogs(this.housingManager);
+
+    // Sync everything
     this.refresh();
   }
 
@@ -98,25 +116,7 @@ export class GameEngine {
     }
   }
 
-  tick() {
-    // console.log('Tick');
-    // Existing generators
-    this.checkAutoGenerators();
-
-    // Try to spawn frogs into vacant homes
-
-    console.log(this.housingManager.hasVacancy());
-
-
-    if(this.housingManager.hasVacancy() === true){
-      this.frogManager.spawnFrogs(this.housingManager);
-    }
-
-    // this.frogManager.spawnFrogs(this.housingManager);
-
-    // Sync everything
-    this.refresh();
-  }
+  
 
   refresh() {
     RefreshManager.applyAll();

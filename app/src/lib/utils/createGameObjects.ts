@@ -1,10 +1,11 @@
-import { Resource } from './Resources';
-import { Building } from './Buildings';
-import { Frog } from './Frogs';
-import { FrogJob } from './FrogJob';
-import { Housing } from './Housing';
+import { Resource } from '../core/Resources';
+import { Building } from '../core/Buildings';
+import { Frog } from '../core/Frogs';
+import { FrogJob } from '../core/FrogJob';
+import { Housing } from '../core/Housing';
 import { defaultResources } from '../data/ResourceData';
 import { defaultBuildings } from '../data/BuildingData';
+import { defaultFrogJobs } from '$lib/data/FrogJobData';
 
 export function createGameObject(type: 'resource', data: any): Resource;
 export function createGameObject(type: 'building', data: any): Building;
@@ -31,8 +32,16 @@ export function createGameObject(type: string, data: any): any {
       return new Frog(data);
     }
     case 'frogJob': {
-      return new FrogJob(data);
+      const base = defaultFrogJobs?.find(f => f.id === data.id);
+
+      if (!base) {
+        console.warn('⚠️ Falling back to raw FrogJob object for:', data.id);
+        return new FrogJob(data); // Fallback to using what we have
+      }
+
+      return new FrogJob({ ...base, ...data });
     }
+
     default:
       throw new Error(`Unsupported game object type: ${type}`);
   }

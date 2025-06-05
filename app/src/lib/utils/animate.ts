@@ -6,13 +6,10 @@ const FAST_SPEED = 0.5;          // for large jumps
 const MANUAL_DIFF_THRESHOLD = 1.5;
 const SNAP_THRESHOLD = 0.001;
 
+import { TICK_INTERVAL_MS } from '$lib/config';
+
 export function animateDisplayValues() {
-  let lastTime = performance.now();
-
-  function tick(now) {
-    const delta = (now - lastTime) / 1000; // in seconds
-    lastTime = now;
-
+  function update() {
     const current = get(resources);
 
     for (const res of current) {
@@ -24,32 +21,36 @@ export function animateDisplayValues() {
       const diff = res.amount - res.display_amount;
       const absDiff = Math.abs(diff);
 
-      if (res.justClicked) {
-        // Instant update when manually clicked
+      if (res.wasClicked || res.wasCrafted) {
         res.display_amount = res.amount;
-        res.justClicked = false;
+        res.wasClicked = false;
+        res.wasCrafted = false;
         continue;
       }
 
       if (diff < 0) {
-        // Resource was spent – instantly reduce
         res.display_amount = res.amount;
         continue;
       }
 
-      // Animate toward target with speed based on difference
       const speed = absDiff > MANUAL_DIFF_THRESHOLD ? FAST_SPEED : SPEED;
-      res.display_amount += diff * speed * delta;
+      const increment = diff * speed;
+      res.display_amount += Math.sign(diff) * Math.min(absDiff, Math.abs(increment));
 
-      // Snap to exact value if very close
       if (absDiff < SNAP_THRESHOLD) {
         res.display_amount = res.amount;
       }
     }
 
     resources.set(current);
+  }
+
+  function tick() {
+    update();
     requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
 }
+
+

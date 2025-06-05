@@ -1,15 +1,18 @@
+// UnlockManager.ts
+
 import { get } from 'svelte/store';
-import { frogJobs } from '../data/FrogJobData';
-import { buildings, resources, frogs, upgrades, stats } from '../state';
-import type { UnlockCondition, Stats } from '$lib/data/types';
+import { buildings, resources, frogs, frogJobs, upgrades, stats } from '../state';
+import type { UnlockCondition, Stats, GameState} from '$lib/types';
 import type { Resource } from '$lib/core/Resources';
 import type { Building } from '$lib/core/Buildings';
 import type { Frog } from '$lib/core/Frogs';
+import type { FrogJob } from '$lib/core/FrogJob';
 
 type UnlockContext = {
   resources: Map<string, Resource>,
   buildings: Map<string, Building>,
   frogs: Map<string, Frog>,
+  frogJobs: Map<string, FrogJob>,
   upgrades?: string[],
   stats?: Stats
 };
@@ -20,6 +23,7 @@ export class UnlockManager {
       resources: new Map(get(resources).map(r => [r.id, r])),
       buildings: new Map(get(buildings).map(b => [b.id, b])),
       frogs: new Map(get(frogs).map(f => [f.id, f])),
+      frogJobs: new Map((get(frogJobs) ?? []).map(j => [j.id, j])),
       upgrades: get(upgrades).filter(u => u.purchased).map(u => u.id),
       stats: get(stats)
     };
@@ -28,6 +32,35 @@ export class UnlockManager {
     this.updateFrogJobs(context);
     this.updateBuildings(context);
 
+  }
+
+  static applyUnlocksToState(state: GameState): void {
+    const context: UnlockContext = {
+      resources: state.resources,
+      buildings: state.buildings,
+      frogs: state.frogs,
+      frogJobs: state.frogJobs,
+      upgrades: state.upgrades.filter(u => u.purchased).map(u => u.id),
+      stats: state.stats
+    };
+
+    for (const r of state.resources.values()) {
+      if (!r.unlocked && this.conditionsMet(r.unlockConditions ?? [], context)) {
+        r.unlocked = true;
+      }
+    }
+
+    for (const b of state.buildings.values()) {
+      if (!b.unlocked && this.conditionsMet(b.unlockConditions ?? [], context)) {
+        b.unlocked = true;
+      }
+    }
+
+    for (const j of state.frogJobs.values()) {
+      if (!j.unlocked && this.conditionsMet(j.unlockConditions ?? [], context)) {
+        j.unlocked = true;
+      }
+    }
   }
 
   static updateResources(context: UnlockContext): void {
@@ -86,9 +119,9 @@ export class UnlockManager {
           if (!b || b.count < condition.amount) return false;
           break;
         }
-        case 'frog': {
-          const f = context.frogs.get(condition.id);
-          if (!f || f.level < (condition.level ?? 1)) return false;
+        case 'frogJob': {
+          const f = context.frogJobs.get(condition.id);
+          if (!f || !f.unlocked) return false;
           break;
         }
         case 'upgrade': {

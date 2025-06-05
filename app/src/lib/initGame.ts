@@ -1,19 +1,16 @@
-import { get } from 'svelte/store';
-import { GameSaveManager } from './managers/GameSaveManager';
-import { defaultResources } from './data/ResourceData';
-import { defaultBuildings } from './data/BuildingData';
-import { defaultFrogJobs } from './data/FrogJobData';
-import { defaultStats } from './data/Stats';
-import { createGameObject } from './core/createGameObjects';
-import { rehydrateMap } from './utils/rehydration';
-import { resources, buildings, frogJobs , frogs, housing, stats, gameLoaded } from './state';
-import type { GameData } from './data/types';
-import { GameEngine } from './core/GameEngine';
-import { engine } from './core/EngineStore';
-import { buildSaveData } from './core/saveHelpers';
-import { animateDisplayValues } from '$lib/utils/animate';
-import { Frog } from '$lib/core/Frogs';
+// initGame.ts
 
+import { GameSaveManager } from '$lib/managers/GameSaveManager';
+import { GameRehydrationManager } from '$lib/managers/GameRehydrationManager';
+
+import { engine } from '$lib/core/EngineStore';
+import { GameEngine } from '$lib/core/GameEngine';
+import { buildSaveData } from '$lib/core/saveHelpers';
+import { animateDisplayValues } from '$lib/utils/animate';
+
+import { resources, buildings, frogs, housing, frogJobs, stats, gameLoaded } from '$lib/state';
+
+import type { GameData, GameState } from '$lib/types';
 
 declare global {
   interface Window {
@@ -21,48 +18,32 @@ declare global {
   }
 }
 
+export async function initGame(): Promise<GameState> {
+  const saved: GameData = GameSaveManager.load();
 
+  // ✅ NEW — use your manager!
+  const state: GameState = GameRehydrationManager.rehydrate(saved);
 
-export async function initGame(): Promise<GameData> {
-  const saved = GameSaveManager.load();
-
-  const resourceMap = rehydrateMap('resource', saved?.resources ?? defaultResources);
-  const buildingMap = rehydrateMap('building', saved?.buildings ?? defaultBuildings);
-
-  const housingArray = saved?.housing ?? [];
-  const housingMap = rehydrateMap('housing',housingArray);
-
-  const savedJobs = saved?.frogjobs ?? defaultFrogJobs;
-  frogJobs.set(savedJobs);
-
-  const frogArray = (saved?.frogs ?? []).map(data => createGameObject('frog', data));
-  const frogMap = new Map<string, Frog>(frogArray.map(f => [f.id, f]));
-
-  
-  const gameEngine = new GameEngine(resourceMap, buildingMap, frogMap);
+  const gameEngine = new GameEngine(state.resources, state.buildings, state.frogs);
   engine.set(gameEngine);
 
+  // ✅ Set all stores from state
+  resources.set([...state.resources.values()]);
+  buildings.set([...state.buildings.values()]);
+  frogJobs.set([...state.frogJobs.values()]);
+  frogs.set([...state.frogs.values()]);
+  housing.set(state.housing);
+  stats.set(state.stats); // Once implemented
+
   animateDisplayValues();
-
-  resources.set([...resourceMap.values()]);
-  buildings.set([...buildingMap.values()]);
-
-  housing.set([...housingMap.values()]);
-  // stats.set(saved?.stats ?? defaultStats);
-  // frogs.set(frogArray);
-
   gameEngine.checkAllUnlocks();
-
-
 
   if (typeof window !== 'undefined' && !window.__autosaveStarted) {
     GameSaveManager.startAutosave(() => buildSaveData());
     window.__autosaveStarted = true;
   }
 
-
-
   gameLoaded.set(true);
 
-  return buildSaveData();
+  return state;
 }

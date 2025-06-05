@@ -1,6 +1,6 @@
 import { TICK_INTERVAL_MS } from '../config';
-import type { FrogData, FrogJob } from '../data/types';
-import { resources, buildings, housing } from '../state';
+import type { FrogData, FrogJob } from '$lib/types';
+import { resources, buildings, housing, frogs, frogJobs } from '../state';
 
 export class Frog {
   id: string;
@@ -11,6 +11,7 @@ export class Frog {
   isAuto: boolean;
   autoRate: number;
   tooltip?: { label: string; html: string };
+  houseId?: string;
 
   constructor(data: Partial<FrogData>) {
     this.id = data.id ?? '';
@@ -21,6 +22,7 @@ export class Frog {
     this.isAuto = data.isAuto ?? false;
     this.autoRate = data.autoRate ?? 0;
     this.tooltip = data.tooltip;
+    this.houseId = data.houseId;
   }
 
   toData(): FrogData {
@@ -32,7 +34,8 @@ export class Frog {
       level: this.level,
       isAuto: this.isAuto,
       autoRate: this.autoRate,
-      tooltip: this.tooltip
+      tooltip: this.tooltip,
+      houseId: this.houseId // ✅ include for saving
     };
   }
 

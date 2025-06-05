@@ -1,5 +1,6 @@
-import type { GameData } from '../data/types';
+import type { GameData } from '$lib/types';
 import { buildSaveData } from '$lib/core/saveHelpers';
+import { createNewGameData } from '$lib/utils/defaults';
 
 const STORAGE_KEY = 'idleFrogGameSave';
 let autosaveId: number | null = null;
@@ -14,9 +15,12 @@ export class GameSaveManager {
     }
   }
 
-  static load(): GameData | null {
+  static load(): GameData {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
+    if (!raw) {
+      console.info('No save found. Starting new game...');
+      return createNewGameData();
+    }
 
     try {
       const parsed = JSON.parse(raw);
@@ -26,16 +30,16 @@ export class GameSaveManager {
         !Array.isArray(parsed.resources) ||
         typeof parsed.stats !== 'object'
       ) {
-        console.warn('Invalid save format. Clearing save...');
+        console.warn('Invalid save format. Clearing and resetting...');
         GameSaveManager.clear();
-        return null;
+        return createNewGameData();
       }
 
       return parsed as GameData;
     } catch (error) {
       console.error('Failed to parse saved game data:', error);
       GameSaveManager.clear();
-      return null;
+      return createNewGameData();
     }
   }
 

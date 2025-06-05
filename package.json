@@ -1,9 +1,16 @@
 {
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "nanoid": "^5.1.5",
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
+    "@types/nanoid": "^2.1.0",
     "daisyui": "^5.0.35"
+  },
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "preview": "svelte-kit preview"
   }
 }

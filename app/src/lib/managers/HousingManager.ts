@@ -1,34 +1,33 @@
 import { get } from 'svelte/store';
 import { housing, buildings } from '$lib/state';
-import type { HousingData } from '$lib/data/types';
+import type { HousingData } from '$lib/types';
 import { Housing } from '$lib/core/Housing';
 import type { Building } from '$lib/core/Buildings';
+import { frogs } from '../stores/frogs';
 
 export class HousingManager {
-    homes: Housing[];
+  homes: Housing[];
 
-    constructor(data: HousingData[]) {
-        this.homes = data.map(h => new Housing(h));
-    }
+  constructor(data: HousingData[]) {
+      this.homes = data.map(h => new Housing(h));
+  }
 
-    static fromStore(): HousingManager {
-        return new HousingManager(get(housing));
-    }
+  static fromStore(): HousingManager {
+      return new HousingManager(get(housing));
+  }
 
-    private generateHousingId(type: string): string {
-        const typeCount = this.homes.filter(h => h.type === type).length;
-    return `${type}_${typeCount + 1}`;
-    }
+  private generateHousingId(type: string): string {
+      const typeCount = this.homes.filter(h => h.type === type).length;
+  return `${type}_${typeCount + 1}`;
+  }
 
-    getHousingSpaceFromBuilding(buildingId: string): number {
-        const b = get(buildings).find(b => b.id === buildingId);
-        if (!b || !b.effects) return 0;
+  getHousingSpaceFromBuilding(buildingId: string): number {
+      const b = get(buildings).find(b => b.id === buildingId);
+      if (!b || !b.effects) return 0;
 
-        const spaceEffect = b.effects.find(e => e.type === 'space' && e.target === 'frogs');
-        return typeof spaceEffect?.value === 'number' ? spaceEffect.value : 0;
-    }
-
-    
+      const spaceEffect = b.effects.find(e => e.type === 'space' && e.target === 'frogs');
+      return typeof spaceEffect?.value === 'number' ? spaceEffect.value : 0;
+  }
 
   createHousingUnit(buildingType: string): void {
       const id = this.generateHousingId(buildingType);
@@ -45,7 +44,6 @@ export class HousingManager {
       this.sync();
   }   
 
-  
   hasVacancy(): boolean {
     return this.homes.some(h => h.hasSpace());
   }
