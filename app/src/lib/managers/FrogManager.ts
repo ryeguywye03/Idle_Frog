@@ -2,10 +2,13 @@ import { Frog } from '$lib/core/Frogs';
 import type { FrogData, FrogJob, FrogJobData } from '$lib/types';
 import { get, writable } from 'svelte/store';
 import { frogJobs } from '../data/FrogJobData';
-import { frogs } from '../stores/frogs';
 import { stats } from '../state';
 import { HousingManager } from '$lib/managers/HousingManager';
 import { createFrogData } from '$lib/data/FrogFactory';
+
+import {
+  frogs
+} from '$lib/stores';
 
 export class FrogManager {
   population: Frog[];

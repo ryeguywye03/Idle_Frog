@@ -1,6 +1,8 @@
 import { TICK_INTERVAL_MS } from '../config';
 import type { FrogData, FrogJob } from '$lib/types';
-import { resources, buildings, housing, frogs, frogJobs } from '../state';
+import { resources, buildings, housing, frogJobs } from '../state';
+import { frogs } from '$lib/stores/frogs';
+
 
 export class Frog {
   id: string;

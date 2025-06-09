@@ -1,5 +1,7 @@
 import { get } from 'svelte/store';
-import { resources, buildings, upgrades, stats, frogs, frogJobs, housing } from '../state';
+import { resources, buildings, upgrades, stats, frogJobs, housing } from '../state';
+import { frogs } from '$lib/stores/frogs';
+
 import type { GameData } from '$lib/types';
 import { HousingManager } from '$lib/managers/HousingManager';
 

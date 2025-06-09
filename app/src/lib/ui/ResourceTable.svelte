@@ -1,6 +1,7 @@
 <script lang="ts">
   import { derived } from 'svelte/store';
-  import { resources, buildings , frogs, frogJobs } from '$lib/state';
+  import { resources, buildings , frogJobs } from '$lib/state';
+  import { frogs } from '$lib/stores/frogs';
   
 
   // Create a derived store so the table auto-updates

@@ -3,7 +3,10 @@ import { housing, buildings } from '$lib/state';
 import type { HousingData } from '$lib/types';
 import { Housing } from '$lib/core/Housing';
 import type { Building } from '$lib/core/Buildings';
-import { frogs } from '../stores/frogs';
+
+import {
+  frogs
+} from '$lib/stores';
 
 export class HousingManager {
   homes: Housing[];

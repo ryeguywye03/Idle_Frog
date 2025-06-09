@@ -8,7 +8,11 @@ import { GameEngine } from '$lib/core/GameEngine';
 import { buildSaveData } from '$lib/core/saveHelpers';
 import { animateDisplayValues } from '$lib/utils/animate';
 
-import { resources, buildings, frogs, housing, frogJobs, stats, gameLoaded } from '$lib/state';
+import { resources, buildings, housing, frogJobs, stats, gameLoaded } from '$lib/state';
+
+import {
+  frogs
+} from '$lib/stores';
 
 import type { GameData, GameState } from '$lib/types';
 

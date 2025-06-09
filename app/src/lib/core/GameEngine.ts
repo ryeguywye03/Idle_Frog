@@ -2,7 +2,8 @@
 import { Resource } from './Resources';
 import { Building } from './Buildings';
 import { Frog } from './Frogs';
-import { resources, buildings, frogs, upgrades, stats } from '$lib/state';
+import { resources, buildings, upgrades, stats } from '$lib/state';
+import { frogs } from '$lib/stores/frogs';
 import { get } from 'svelte/store';
 import { UnlockManager } from '$lib/managers/UnlockManager';
 import { FrogManager } from '$lib/managers/FrogManager';

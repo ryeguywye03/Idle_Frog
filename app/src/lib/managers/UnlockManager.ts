@@ -1,12 +1,16 @@
 // UnlockManager.ts
 
 import { get } from 'svelte/store';
-import { buildings, resources, frogs, frogJobs, upgrades, stats } from '../state';
-import type { UnlockCondition, Stats, GameState} from '$lib/types';
+import { buildings, resources, frogJobs, upgrades, stats } from '../state';
+import type { UnlockCondition, StatsData, GameState} from '$lib/types';
 import type { Resource } from '$lib/core/Resources';
 import type { Building } from '$lib/core/Buildings';
 import type { Frog } from '$lib/core/Frogs';
 import type { FrogJob } from '$lib/core/FrogJob';
+
+import {
+  frogs
+} from '$lib/stores';
 
 type UnlockContext = {
   resources: Map<string, Resource>,
@@ -14,7 +18,7 @@ type UnlockContext = {
   frogs: Map<string, Frog>,
   frogJobs: Map<string, FrogJob>,
   upgrades?: string[],
-  stats?: Stats
+  stats?: StatsData
 };
 
 export class UnlockManager {

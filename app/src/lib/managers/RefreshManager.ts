@@ -1,7 +1,11 @@
 import { get } from 'svelte/store';
-import { resources, buildings, housing, frogs } from '$lib/state';
+import { resources, buildings, housing } from '$lib/state';
 import { Resource } from '$lib/core/Resources';
 import { HousingManager } from './HousingManager';
+
+import {
+  frogs
+} from '$lib/stores';
 
 export class RefreshManager {
   static applyAll(): void {

@@ -8,6 +8,11 @@ import type { Housing } from './core/Housing';
 import type { Frog } from './core/Frogs';
 import type { FrogJob } from './core/FrogJob';
 
+
+import {
+  frogs
+} from '$lib/stores';
+
 import type { HousingData, FrogData } from '$lib/types';
 
 import { type StatsData, type UpgradeData } from '$lib/types';
@@ -19,8 +24,6 @@ export const buildings = writable<Building[]>([]);
 export const upgrades = writable<UpgradeData[]>([]);
 
 export const housing = writable<HousingData[]>([]);
-
-// export const frogs = writable<Frog[]>([]);
 
 export const frogJobs = writable<FrogJob[]>([]);
 
