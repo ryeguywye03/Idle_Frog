@@ -1,7 +1,8 @@
 import { TICK_INTERVAL_MS } from '../config';
 import type { FrogData, FrogJob } from '$lib/types';
-import { resources, buildings, housing, frogJobs } from '../state';
+import { resources, buildings, housing, frogJobs } from '$lib/stores';
 import { frogs } from '$lib/stores/frogs';
+import { get } from 'svelte/store';
 
 
 export class Frog {
@@ -64,5 +65,13 @@ export class Frog {
       }
     }
     housing.set([...housingList]);
+  }
+
+  levelUp() {
+    this.level = (this.level ?? 1) + 1;
+  }
+
+  assignJob(job: FrogJob) {
+    this.job = job;
   }
 }

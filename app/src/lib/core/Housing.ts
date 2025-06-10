@@ -1,6 +1,6 @@
 import { TICK_INTERVAL_MS } from '../config';
 import type { FrogData, FrogJob, HousingData } from '$lib/types';
-import { resources, buildings } from '../state';
+import { resources, buildings } from '$lib/stores';
 
 
 export class Housing {

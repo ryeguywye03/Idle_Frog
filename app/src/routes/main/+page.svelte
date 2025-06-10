@@ -1,8 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { get } from 'svelte/store';
-    import { resources, buildings, gameLoaded } from '$lib/state';
-    import { engine } from '$lib/core/EngineStore';
+    import { resources, buildings } from '$lib/stores';
+    import { gameLoaded } from '$lib/stores/engine';
+    import { engine } from '$lib/stores/engine';
     import { GameSaveManager } from '$lib/managers/GameSaveManager';
     import { currentPanel } from '$lib/stores/panel';
 

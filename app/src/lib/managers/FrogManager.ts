@@ -2,7 +2,7 @@ import { Frog } from '$lib/core/Frogs';
 import type { FrogData, FrogJob, FrogJobData } from '$lib/types';
 import { get, writable } from 'svelte/store';
 import { frogJobs } from '../data/FrogJobData';
-import { stats } from '../state';
+import { stats } from '$lib/stores/statsStores/gameStats';
 import { HousingManager } from '$lib/managers/HousingManager';
 import { createFrogData } from '$lib/data/FrogFactory';
 

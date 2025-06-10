@@ -2,7 +2,8 @@ import type { Frog } from '$lib/core/Frogs';
 import type { FrogJob, FrogJobData } from '$lib/types';
 import { get, writable } from 'svelte/store';
 import { frogJobs } from '../data/FrogJobData';
-import { resources, buildings, stats } from '../state';
+import { resources, buildings } from '$lib/stores';
+import { stats } from '$lib/stores/statsStores/gameStats';
 
 export class FrogJobManager {
   static getJobs(): FrogJobData[] {

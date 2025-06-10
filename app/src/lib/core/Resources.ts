@@ -1,6 +1,6 @@
 import { TICK_INTERVAL_MS } from '../config';
 import type { ResourceData, UnlockCondition, CraftRequirement } from '$lib/types';
-import { resources, stats } from '../state';
+import { resources, stats } from '$lib/stores';
 import { StatsManager } from '$lib/managers/StatsManager';
 
 export class Resource {
@@ -16,12 +16,12 @@ export class Resource {
   manual: boolean;
   wasClicked?: boolean;
   wasCrafted?: boolean;
+  wasAutoCollected?: boolean;
   isCraftable: boolean;
   btn_label?: string;
   unlockConditions?: UnlockCondition[];
   craftRequirement?: CraftRequirement[];
-  tooltip?: { label: string; html: string };
-
+  tooltip?: { label: string; html?: string };
 
   constructor(data: Partial<ResourceData>) {
     this.id = data.id ?? '';
@@ -41,6 +41,7 @@ export class Resource {
     this.btn_label = data.btn_label;
     this.unlockConditions = data.unlockConditions;
     this.craftRequirement = data.craftRequirement;
+    this.wasAutoCollected = false;
   }
 
   toData(): ResourceData {
@@ -73,16 +74,6 @@ export class Resource {
     this.autoRate = 0;
   }
 
-  startAutoCollect() {
-    // console.log("start automation");
-    if (this.autoTimer) return;
-    if (!this.unlocked || !this.isAuto || this.autoRate <= 0) return;
-  
-    this.autoTimer = setInterval(() => {
-      this.generate();
-    }, TICK_INTERVAL_MS);
-  }
-
   generate() {
     if (!this.unlocked || !this.isAuto || this.autoRate <= 0) return;
 
@@ -97,13 +88,9 @@ export class Resource {
     // console.log(`[${this.name}] Tick took ${Math.round(after - before)}ms`);
   }
 
-
   get productionRate(): number {
     if (!this.isAuto) return 0;
-    if (this.isAuto) {
-      // console.log(this.autoRate)
-      return this.autoRate;
-    }
+    return this.autoRate;
   }
 
   collect(isManual = true) {
@@ -128,7 +115,6 @@ export class Resource {
       return res !== undefined && res.amount >= req.amount;
     });
   }
-
 
   spend(amount: number): boolean {
     if (this.amount < amount) return false;
@@ -174,8 +160,6 @@ export class Resource {
     this.updateStoreTrigger();
   }
 
-
-
   updateFromData(data: ResourceData) {
     this.amount = data.amount;
     this.increment = data.increment;
@@ -184,62 +168,4 @@ export class Resource {
     this.unlocked = data.unlocked ?? this.unlocked;
     this.manual = data.manual ?? this.manual;
   }
-
-  getTooltipHTML(): string {
-    const lines: string[] = [];
-  
-    // Optional label
-    if (this.tooltip?.label) {
-      lines.push(`<div><strong>${this.tooltip.label}</strong></div>`);
-    }
-  
-    // Optional description
-    if (this.tooltip?.html) {
-      lines.push(`<div style="color: #444; font-size: 0.9rem; margin-top: 4px;">${this.tooltip.html}</div>`);
-    }
-  
-    // Divider
-    lines.push(`<hr style="margin: 6px 0; border: none; border-top: 1px solid #888;" />`);
-  
-    // Craft requirement
-    if (this.craftRequirement) {
-      lines.push(`
-        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-          <span style="color: darkgreen;">${this.craftRequirement.resource}</span>
-          <span style="color: crimson;">${this.craftRequirement.amount}</span>
-        </div>
-      `);
-    }
-  
-    // Manual/auto info
-    if (this.manual) {
-      lines.push(`<em>Can be gathered manually.</em>`);
-    }
-  
-    if (this.isAuto) {
-      lines.push(`<em>Auto-produces <strong>${this.increment}</strong>/s</em>`);
-    }
-  
-    // Unlock requirement
-    if (this.unlockConditions) {
-      lines.push(`<div style="color: goldenrod;">Unlocks at ${this.unlockConditions.amount} ${this.unlockConditions.resource}</div>`);
-    }
-  
-    // Resource bar
-    lines.push(`
-      <div style="display: flex; justify-content: space-between; margin-top: 8px;">
-        <span>Current:</span>
-        <span>${this.amount.toFixed(1)} / ${this.storage}</span>
-      </div>
-    `);
-  
-    // Optional italic flavor label
-    if (this.tooltip?.label) {
-      lines.push(`<div style="font-style: italic; font-size: 0.75rem; text-align: right; margin-top: 4px;">${this.tooltip.label}</div>`);
-    }
-  
-    return `<div style="font-size: 0.9rem; line-height: 1.4; min-width: 200px;">${lines.join('')}</div>`;
-  }
-  
-
 }

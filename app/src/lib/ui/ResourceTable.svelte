@@ -1,11 +1,12 @@
 <script lang="ts">
   import { derived } from 'svelte/store';
-  import { resources, buildings , frogJobs } from '$lib/state';
+  import { resources, buildings, frogJobs } from '$lib/stores';
   import { frogs } from '$lib/stores/frogs';
+  import { createGameObject } from '$lib/utils/createGameObjects';
   
 
-  // Create a derived store so the table auto-updates
-  const resList = derived(resources, $resources => $resources);
+  // Rehydrate resources for UI rendering
+  const resList = derived(resources, $resources => $resources.map(r => createGameObject('resource', r)));
 
   const frogList = derived(frogs, $frogs => $frogs);
 
@@ -40,7 +41,7 @@
           <td class="amount right text-primary">{res.display_amount.toFixed(2)}</td>
           <td class="max right text-secondary">{res.storage.toFixed(2) ?? 100}</td>
           <td class="rate right text-accent">{res.productionRate?.toFixed(2) ?? '0.00'}/s</td>
-          <td class="bonus right text-neutral">+{res.bonusRate?.toFixed(2) ?? 0}%</td>
+          <td class="bonus right text-neutral"></td>
         </tr>
         {/if}
       {/each}

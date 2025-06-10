@@ -1,7 +1,7 @@
 // src/lib/core/Building.ts
 import type { BuildingData, BuildingEffect, BuildingType, UnlockCondition } from '$lib/types';
 import { Resource } from './Resources';
-import { buildings, stats } from '../state';
+import { buildings, stats } from '$lib/stores';
 import { get } from 'svelte/store';
 
 export class Building {
@@ -71,40 +71,5 @@ export class Building {
 
     }
     this.count += 1;
-  }
-  
-  getTooltipHTML(): string {
-    const lines: string[] = [];
-  
-    // Optional header
-    if (this.tooltip?.label) {
-      lines.push(`<div><strong>${this.tooltip.label}</strong></div>`);
-    }
-  
-    // Optional description
-    if (this.tooltip?.html) {
-      lines.push(`<div style="color: #444; font-size: 0.9rem; margin-top: 4px;">${this.tooltip.html}</div>`);
-    }
-  
-    // Horizontal divider
-    lines.push(`<hr style="margin: 6px 0; border: none; border-top: 1px solid #888;" />`);
-  
-    // Build cost section (align name left, amount right)
-    const costs = this.getCurrentCost();
-    for (const cost of costs) {
-      lines.push(`
-        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-          <span style="color: #222;">${cost.resource}</span>
-          <span style="color: crimson;">${cost.amount}</span>
-        </div>
-      `);
-    }
-    
-    // Optional italic flavor (tooltip.label doubles as label+flavor)
-    if (this.tooltip?.label) {
-      lines.push(`<div style="font-style: italic; font-size: 0.75rem; margin-top: 6px; text-align: right;">${this.tooltip.label}</div>`);
-    }
-  
-    return `<div style="min-width: 200px;">${lines.join('')}</div>`;
   }
 }

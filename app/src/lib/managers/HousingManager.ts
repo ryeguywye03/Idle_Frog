@@ -1,5 +1,6 @@
 import { get } from 'svelte/store';
-import { housing, buildings } from '$lib/state';
+import { housing } from '$lib/stores/gameStores/housing';
+import { buildings } from '$lib/stores';
 import type { HousingData } from '$lib/types';
 import { Housing } from '$lib/core/Housing';
 import type { Building } from '$lib/core/Buildings';

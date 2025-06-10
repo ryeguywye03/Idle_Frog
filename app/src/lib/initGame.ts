@@ -3,16 +3,16 @@
 import { GameSaveManager } from '$lib/managers/GameSaveManager';
 import { GameRehydrationManager } from '$lib/managers/GameRehydrationManager';
 
-import { engine } from '$lib/core/EngineStore';
+import { engine } from '$lib/stores/engine';
 import { GameEngine } from '$lib/core/GameEngine';
 import { buildSaveData } from '$lib/core/saveHelpers';
 import { animateDisplayValues } from '$lib/utils/animate';
 
-import { resources, buildings, housing, frogJobs, stats, gameLoaded } from '$lib/state';
+import { resources, buildings, frogs, frogJobs } from '$lib/stores';
+import { housing } from '$lib/stores/gameStores/housing';
+import { stats } from '$lib/stores/statsStores/gameStats';
+import { gameLoaded } from '$lib/stores/engine';
 
-import {
-  frogs
-} from '$lib/stores';
 
 import type { GameData, GameState } from '$lib/types';
 

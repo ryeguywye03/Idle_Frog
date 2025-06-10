@@ -1,14 +1,15 @@
-
 import { Resource } from './Resources';
 import { Building } from './Buildings';
 import { Frog } from './Frogs';
-import { resources, buildings, upgrades, stats } from '$lib/state';
+import { resources, buildings, upgrades } from '$lib/stores';
+import { stats } from '$lib/stores/statsStores/gameStats';
 import { frogs } from '$lib/stores/frogs';
 import { get } from 'svelte/store';
 import { UnlockManager } from '$lib/managers/UnlockManager';
 import { FrogManager } from '$lib/managers/FrogManager';
 import { HousingManager } from '$lib/managers/HousingManager';
 import { RefreshManager } from '$lib/managers/RefreshManager';
+import { createGameObject } from '$lib/utils/createGameObjects';
 
 export class GameEngine {
   resources: Map<string, Resource>;
@@ -46,20 +47,25 @@ export class GameEngine {
   }
 
   tick() {
-    // console.log('Tick');
-    // Existing generators
-    this.checkAutoGenerators();
+    // Get latest resources from the store and rehydrate for logic
+    const latestResources = get(resources).map(r => createGameObject('resource', r));
+
+    // Centralized auto-collect
+    for (const res of latestResources) {
+      if (res.unlocked && res.isAuto && res.autoRate > 0) {
+        res.amount += res.autoRate;
+        if (res.amount > res.storage) res.amount = res.storage;
+      }
+    }
+
+    // After logic, update the store with the new values
+    resources.set(latestResources.map(r => r.toData()));
 
     // Try to spawn frogs into vacant homes
-    
     console.log(this.housingManager.hasVacancy());
-
-
     if(this.housingManager.hasVacancy() === true){
       this.frogManager.spawnFrogs(this.housingManager);
     }
-
-    // this.frogManager.spawnFrogs(this.housingManager);
 
     // Sync everything
     this.refresh();
@@ -83,14 +89,11 @@ export class GameEngine {
   }
 
   craft(id: string) {
-    console.log('[ENGINE] Craft triggered for:', id);
-
     const res = this.resources.get(id);
     if (!res) {
       console.warn('No resource found for:', id);
       return;
     }
-
     res.craft(this.resources);
     this.checkAllUnlocks();
   }
@@ -101,28 +104,16 @@ export class GameEngine {
 
     building.build(this.resources);
 
-    if(building.count > 0 && building.type === 'housing'){
-
+    if (building.count > 0 && building.type === 'housing') {
       this.housingManager.createHousingUnit(id);
-
     }
-    this.checkAllUnlocks();
-  }
 
-  checkAutoGenerators() {
-    for (const res of this.resources.values()) {
-      if (res.unlocked && res.isAuto) {
-        res.startAutoCollect();
-      }
-    }
+    buildings.set(Array.from(this.buildings.values()).map(b => b.toData()));
+    resources.set(Array.from(this.resources.values()).map(r => r.toData()));
   }
-
-  
 
   refresh() {
     RefreshManager.applyAll();
-    resources.set(this.get_resources());
-    buildings.set(this.get_buildings());
     frogs.set([...this.frogs.values()]);
   }
 

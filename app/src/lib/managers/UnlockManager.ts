@@ -1,7 +1,8 @@
 // UnlockManager.ts
 
 import { get } from 'svelte/store';
-import { buildings, resources, frogJobs, upgrades, stats } from '../state';
+import { buildings, resources, frogJobs, upgrades } from '$lib/stores';
+import { stats } from '$lib/stores/statsStores/gameStats';
 import type { UnlockCondition, StatsData, GameState} from '$lib/types';
 import type { Resource } from '$lib/core/Resources';
 import type { Building } from '$lib/core/Buildings';

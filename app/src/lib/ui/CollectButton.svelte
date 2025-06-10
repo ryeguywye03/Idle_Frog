@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { resources, stats } from '$lib/state';
+  import { resources } from '$lib/stores';
+  import { stats } from '$lib/stores/statsStores/gameStats';
 
   export let resourceId: string;
   export let label: string;

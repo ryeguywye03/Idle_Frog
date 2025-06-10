@@ -3,7 +3,7 @@
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
     import { initGame } from '$lib/initGame';
-    import { gameLoaded } from "$lib";
+    import { gameLoaded } from '$lib/stores/engine';
 
     onMount(async () => {
         try {

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { get } from 'svelte/store';
-    import { frogJobs } from '$lib/state';
+    import { frogJobs } from '$lib/stores';
     import FrogButton from '$lib/ui/FrogButton.svelte';
-    import { engine } from '$lib/core/EngineStore';
+    import { engine } from '$lib/stores/engine';
     import Card from '$lib/ui/Card.svelte'
     import CardTitle from '$lib/ui/CardTitle.svelte';
 

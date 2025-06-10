@@ -1,9 +1,7 @@
 <script lang="ts">
   import { GameSaveManager } from '$lib/managers/GameSaveManager';
   import { currentPanel } from '$lib/stores/panel';
-
-
-
+  import { initGame } from '$lib/initGame';
 </script>
 
 
@@ -21,9 +19,9 @@
       Camp
     </button>
     
-    <button class="btn" on:click={() => {
+    <button class="btn" on:click={async () => {
       GameSaveManager.clear();
-      location.reload();
+      await initGame();
     }}>Clear Save</button>
     <a class="btn">Button</a>
   </div>
